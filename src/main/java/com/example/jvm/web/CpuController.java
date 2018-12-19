@@ -15,10 +15,43 @@ import java.util.List;
 @RestController
 public class CpuController {
 
+    private Object object1 = new Object();
+
+    private Object object2 = new Object();
+
     @GetMapping("/loop")
     public List<Long> loop(){
         String data = "{\"data\":[{\"partnerid]\":";
         return getPartneridsFromJson(data);
+    }
+
+    @GetMapping("/deadlock")
+    public String deadLock(){
+        new Thread(() -> {
+            synchronized (object1){
+                try{
+                    Thread.sleep(1000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                synchronized (object2){
+                    System.out.println("Thread 1 run over");
+                }
+            }
+        }).start();
+        new Thread(() -> {
+            synchronized (object2){
+                try{
+                    Thread.sleep(1000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                synchronized (object1){
+                    System.out.println("Thread 2 run over");
+                }
+            }
+        }).start();
+        return "dead lock !";
     }
 
 
