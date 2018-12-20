@@ -2,7 +2,6 @@ package com.example.jvm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 用来提供堆内存储的对象信息的类
